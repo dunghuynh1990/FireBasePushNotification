@@ -6,6 +6,10 @@
 target 'FireBasePushNotification' do
 pod 'Firebase'
 pod 'Firebase/Core'
-pod 'Firebase/Messaging' 
+pod 'Firebase/Messaging'
+
+#Authentication
+pod 'Firebase/Auth'
+pod 'GoogleSignIn'
 end
 

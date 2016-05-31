@@ -11,6 +11,7 @@ import Firebase
 import FirebaseInstanceID
 import FirebaseMessaging
 
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -31,24 +32,35 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject],
-                     fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
-        
-        // Print message ID.
-        print("Message ID: \(userInfo["gcm.message_id"]!)")
-        
-        // Print full message.
-        print("%@", userInfo)
+    func application(application: UIApplication,
+                     didRegisterForRemoteNotificationsWithDeviceToken deviceToken: NSData) {
+        FIRInstanceID.instanceID().setAPNSToken(deviceToken, type: FIRInstanceIDAPNSTokenType.Sandbox)
     }
     
+//    // [START receive_message]
+//    func application(application: UIApplication, didReceiveRemoteNotification
+//        userInfo: [NSObject : AnyObject],
+//        fetchCompletionHandler completionHandler: (UIBackgroundFetchResult) -> Void) {
+//        
+//        // Print message ID.
+////        print("Message ID: \(userInfo["gcm.message_id"])")
+//        
+//        // Print full message.
+//        print("%@", userInfo)
+//    }
+    // [END receive_message]
+    
+    func application(application: UIApplication, didReceiveRemoteNotification userInfo: [NSObject : AnyObject]) {
+        print(userInfo)
+    }
+    
+    // [START refresh_token]
     func tokenRefreshNotificaiton(notification: NSNotification) {
         let refreshedToken = FIRInstanceID.instanceID().token()!
         print("InstanceID token: \(refreshedToken)")
-        
-        // Connect to FCM since connection may have failed when attempted before having a token.
         connectToFcm()
     }
-
+    
     func connectToFcm() {
         FIRMessaging.messaging().connectWithCompletion { (error) in
             if (error != nil) {
@@ -67,6 +79,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         FIRMessaging.messaging().disconnect()
         print("Disconnected from FCM.")
     }
-
+    
+    func application(application: UIApplication,
+                     openURL url: NSURL, options: [String: AnyObject]) -> Bool {
+        return GIDSignIn.sharedInstance().handleURL(url,
+                                                    sourceApplication: options[UIApplicationOpenURLOptionsSourceApplicationKey] as? String,
+                                                    annotation: options[UIApplicationOpenURLOptionsAnnotationKey])
+    }
 }
 

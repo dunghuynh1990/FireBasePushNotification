@@ -10,11 +10,25 @@ import UIKit
 import Firebase
 import FirebaseInstanceID
 import FirebaseMessaging
-class ViewController: UIViewController {
+
+
+
+
+class ViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+//        let token = FIRInstanceID.instanceID().token()
+//        print("InstanceID token: \(token!)")
+
+    
         
+        GIDSignIn.sharedInstance().clientID = FIRApp.defaultApp()!.options.clientID
+        GIDSignIn.sharedInstance().delegate = self
+        
+        //GG Sign In
+        GIDSignIn.sharedInstance().uiDelegate = self
+//        GIDSignIn.sharedInstance().signInSilently()
     }
 
     override func didReceiveMemoryWarning() {
@@ -22,21 +36,40 @@ class ViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    
-    @IBAction func handleLogTokenTouch(sender: UIButton) {
-        // [START get_iid_token]
-        let token = FIRInstanceID.instanceID().token()
-        print("InstanceID token: \(token!)")
-        // [END get_iid_token]
+    //MARK: Google Sign In
+    func signIn(signIn: GIDSignIn!, didSignInForUser user: GIDGoogleUser!,
+                withError error: NSError!) {
+        if let error = error {
+            print(error.localizedDescription)
+            return
+        }else{
+            print("Greate! Our user sign in! :\(user)")
+            let authentication = user.authentication
+            let credential = FIRGoogleAuthProvider.credentialWithIDToken(authentication.idToken,
+                                                                         accessToken: authentication.accessToken)
+            
+            FIRAuth.auth()?.signInWithCredential(credential) {
+                (user, error) in
+                
+                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyboard.instantiateViewControllerWithIdentifier("AccountViewController") 
+                self.presentViewController(vc, animated: true, completion: nil)
+            }
+        }
+    }
+
+    func signIn(signIn: GIDSignIn!, didDisconnectWithUser user:GIDGoogleUser!,
+                withError error: NSError!) {
     }
     
-    @IBAction func handleSubscribeTouch(sender: UIButton) {
-        // [START subscribe_topic]
+    @IBAction func subscribeTopic(sender: AnyObject) {
         FIRMessaging.messaging().subscribeToTopic("/topics/news")
         print("Subscribed to news topic")
-        // [END subscribe_topic]
     }
 
-
+    @IBAction func getToken(sender: AnyObject) {
+        let token = FIRInstanceID.instanceID().token()
+        print("InstanceID token: \(token!)")
+    }
 }
 
