@@ -11,5 +11,8 @@ pod 'Firebase/Messaging'
 #Authentication
 pod 'Firebase/Auth'
 pod 'GoogleSignIn'
+
+#Crash Reporting
+pod 'Firebase/Crash'
 end
 

@@ -53,7 +53,6 @@
         <!--Account View Controller-->
         <scene sceneID="ZoV-vJ-CPP">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="ChZ-S4-d09" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="AccountViewController" id="Wnz-Pw-uJo" customClass="AccountViewController" customModule="FireBasePushNotification" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GUe-2c-1sV"/>
@@ -75,6 +74,7 @@
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ChZ-S4-d09" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="669.5" y="190.5"/>
         </scene>

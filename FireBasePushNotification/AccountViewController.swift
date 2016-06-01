@@ -13,6 +13,19 @@ class AccountViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        if let user = FIRAuth.auth()?.currentUser {
+
+            print(user.displayName!)
+            print(user.email!)
+            print(user.photoURL!)
+            print(user.uid)
+            // The user's ID, unique to the Firebase project.
+            // Do NOT use this value to authenticate with
+            // your backend server, if you have one. Use
+            // getTokenWithCompletion:completion: instead.
+        } else {
+            // No user is signed in.
+        }
     }
 
     override func didReceiveMemoryWarning() {
